@@ -67,7 +67,7 @@ axs[1].set_ylabel('$q4$')
 axs[1].set_xlabel(r'$x/L_x$')
 plt.tight_layout()
 plt.subplots_adjust(hspace=0)
-fig.savefig("density and q4.pdf")
+fig.savefig("EDMD_density_q4_profiles.pdf")
 
 fig, axs = plt.subplots(2, 1, figsize=(6, 8), sharex=True, layout = "constrained")
 for i in range(N):
@@ -84,5 +84,5 @@ axs[1].set_ylabel('$E_b/T$')
 plt.tight_layout()
 plt.subplots_adjust(hspace=0)
 
-fig.savefig("energy.pdf")
+fig.savefig("EDMD_energy_profile.pdf")
 plt.show()
