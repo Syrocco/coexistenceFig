@@ -77,8 +77,6 @@ for i in range(N):
     axs[1].plot(L[i][::m], downsample(q4[i], n = n, m = m), color=color[i], marker = marker[i], markersize = markersize, mfc = "none", linestyle = "--")
 axs[1].set_ylabel('$q_4$')
 axs[1].set_xlabel(r'$x/L_x$')
-plt.tight_layout()
-plt.subplots_adjust(hspace=0)
 fig.savefig("EDMD_density_q4_profiles.pdf")
 
 fig, axs = plt.subplots(2, 1, figsize=(6, 5), sharex=True, layout = "constrained")
