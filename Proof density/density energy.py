@@ -32,7 +32,9 @@ n = 3
 m = 2
         
 color = ["#02ecee","#fa03ee", "#00fe01","#fa8173","black","#ffd41c"]
+color2 = ["#02ecee","#fa03ee", "#00fe01","#fa8173","black","#ffd41c"]
 marker = ["^", "D","s", "o", "v", "<"]
+marker2 = ["^", "D","s", "o", "v", "<"]
 Lx = 23.690
 T = 1.367
 
@@ -45,11 +47,14 @@ density = A["dens"]
 Es = A["ES"]/T
 Eb = A["EB"]/T
 
+sortAccordingToA(phi, density, Es, Eb)
+
 A = np.load("proofq4.npz")
 q4 = A["q4"]
+phi = A["phi"]
 
 
-sortAccordingToA(phi, density, Es, Eb, q4)
+sortAccordingToA(phi,  q4)
 
 
 # Fixing stupid mistake in the original npz
