@@ -32,11 +32,9 @@ n = 3
 m = 2
         
 color = ["#02ecee","#fa03ee", "#00fe01","#fa8173","black","#ffd41c"]
-color2 = ["#02ecee","#fa03ee", "#00fe01","#fa8173","black","#ffd41c"]
 marker = ["^", "D","s", "o", "v", "<"]
-marker2 = ["^", "D","s", "o", "v", "<"]
 Lx = 23.690
-T = 1.367
+T = 1.367*1.41 #1.41 to correct for bad sampling of dtnoise
 
 A = np.load("proof.npz")
 LL = A["LL"]
@@ -74,26 +72,55 @@ N = len(Es)
 fig, axs = plt.subplots(2, 1, figsize=(6, 5), sharex=True, layout = "constrained")
 
 
-for i in range(N):
-    axs[0].plot(L[i][::m], downsample(density[i], n = n, m = m), color=color[i], marker = marker[i], markersize = markersize, mfc = "none", linestyle = "--")
-axs[0].set_ylabel('$\phi$')
 
 for i in range(N):
-    axs[1].plot(L[i][::m], downsample(q4[i], n = n, m = m), color=color[i], marker = marker[i], markersize = markersize, mfc = "none", linestyle = "--")
-axs[1].set_ylabel('$q_4$')
+    if i >= N//2:
+        axs[1].plot(L[i][::m], downsample(density[i], n = n, m = m), color=color[i], marker = marker[i], markersize = markersize, mfc = "none", linestyle = "--", label = round(phi[i], 3))
+    else:
+        axs[1].plot(L[i][::m], downsample(density[i], n = n, m = m), color=color[i], marker = marker[i], markersize = markersize, mfc = "none", linestyle = "--")
+        
+axs[1].set_ylabel('$\phi(x)$')
 axs[1].set_xlabel(r'$x/L_x$')
+
+for i in range(N):
+    if i < N//2:
+        axs[0].plot(L[i][::m], downsample(q4[i], n = n, m = m), color=color[i], marker = marker[i], markersize = markersize, mfc = "none", linestyle = "--", label = round(phi[i], 3))
+    else:
+        axs[0].plot(L[i][::m], downsample(q4[i], n = n, m = m), color=color[i], marker = marker[i], markersize = markersize, mfc = "none", linestyle = "--")
+axs[0].set_ylabel('$q_4(x)$')
+
+mul = 0.6
+plt.rcParams['legend.title_fontsize'] = fontsizeMain*mul
+axs[1].legend(title = r"$\phi = $", frameon = False, fontsize = fontsizeMain*mul, loc = "best", bbox_to_anchor=(0.64, 0.23, 0.3, 0.5))
+axs[0].legend(title = r"$\phi = $", frameon = False, fontsize = fontsizeMain*mul, loc = "best", bbox_to_anchor=(0.64, 0.23, 0.3, 0.5))
+axs[0].text(0.05, 0.3, 'a)', transform=axs[0].transAxes, fontsize=fontsizeMain*1.3, ha='left', va='bottom')
+axs[1].text(0.05, 0.25, 'b)', transform=axs[1].transAxes, fontsize=fontsizeMain*1.3, ha='left', va='bottom')
 fig.savefig("EDMD_density_q4_profiles.pdf")
 
 fig, axs = plt.subplots(2, 1, figsize=(6, 5), sharex=True, layout = "constrained")
 for i in range(N):
-    axs[0].plot(L[i][::m], downsample(Es[i], n = n, m = m), color=color[i], marker = marker[i], markersize = markersize, mfc = "none", linestyle = "--")
-axs[0].set_ylabel('$E_s/T$')
+    if i < N//2:
+        axs[0].plot(L[i][::m], downsample(Es[i], n = n, m = m), color=color[i], marker = marker[i], markersize = markersize, mfc = "none", linestyle = "--", label = round(phi[i], 3))
+    else:
+        axs[0].plot(L[i][::m], downsample(Es[i], n = n, m = m), color=color[i], marker = marker[i], markersize = markersize, mfc = "none", linestyle = "--")
+axs[0].set_ylabel('$T_S(x)/T$')
 
 # Third subplot
 for i in range(N):
-    axs[1].plot(L[i][::m], downsample(Eb[i], n = n, m = m), color=color[i], marker = marker[i], markersize = markersize, mfc = "none", linestyle = "--")
+    if i < N//2:
+        axs[1].plot(L[i][::m], downsample(Eb[i], n = n, m = m), color=color[i], marker = marker[i], markersize = markersize, mfc = "none", linestyle = "--")
+    else:
+        axs[1].plot(L[i][::m], downsample(Eb[i], n = n, m = m), color=color[i], marker = marker[i], markersize = markersize, mfc = "none", linestyle = "--", label = round(phi[i], 3))
 axs[1].set_xlabel(r'$x/L_x$')
-axs[1].set_ylabel('$E_b/T$')
+axs[1].set_ylabel('$T_L(x)/T$')
+
+mul = 0.6
+plt.rcParams['legend.title_fontsize'] = fontsizeMain*mul
+axs[1].legend(title = r"$\phi = $", frameon = False, fontsize = fontsizeMain*mul, loc = "best", bbox_to_anchor=(0.64, 0.23, 0.3, 0.5))
+axs[0].legend(title = r"$\phi = $", frameon = False, fontsize = fontsizeMain*mul, loc = "best", bbox_to_anchor=(0.64, 0.23, 0.3, 0.5))
+
+axs[0].text(0.05, 0.3, 'a)', transform=axs[0].transAxes, fontsize=fontsizeMain*1.3, ha='left', va='bottom')
+axs[1].text(0.05, 0.25, 'b)', transform=axs[1].transAxes, fontsize=fontsizeMain*1.3, ha='left', va='bottom')
 
 
 fig.savefig("EDMD_energy_profile.pdf")
